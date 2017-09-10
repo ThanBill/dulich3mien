@@ -17,16 +17,63 @@ var mimeType = {
     wav: "audio/wav",
     svg: "image/svg+xml",
     woff2:"application/font-woff2"
-}
+};
 /*path
 **************************************/
 var path ={
-    html:"../htmls",
+    html: "../htmls",
     public: "../public"
-}
+};
 //end common
 
 
 http.createServer(function(request, response){
 
+    //analysis request
+    const URL = url.parse(request.url);
+
+    console.log("method: " + URL.method);
+
+    if(URL.method == "GET"){
+        var lastIndexOfDot = -1;
+        try{
+            lastIndexOfDot = URL.pathname.lastIndexOf('.');
+        }
+        catch(exception){
+            lastIndexOfDot = -1;
+        }
+        switch(URL.pathname){
+            case "/" :
+                fs.readFile(path.html + "/index.html", function(err, data){
+                    if(err){
+                        response.writeHead(404,"Not found");
+                        response.end();
+                    }
+                    else{
+                        response.writeHead(200, {'content-type':mimeType.html});
+                        response.end(data);
+                    }
+                });
+                break;
+            case "/dulich3mien":
+                fs.readFile(path.html + "/index.html", function(err, data){
+                    if(err){
+                        response.writeHead(404,"Not found");
+                        response.end();
+                    }
+                    else{
+                        response.writeHead(200, {'content-type':mimeType.html});
+                        response.end(data);
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+    }
+    else if(URL.method == "POST"){
+
+    }
+
 }).listen(8080);
+console.log("Server running at http://loaclhost:8080");
