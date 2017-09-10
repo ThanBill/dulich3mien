@@ -32,9 +32,9 @@ http.createServer(function(request, response){
     //analysis request
     const URL = url.parse(request.url);
 
-    console.log("method: " + URL.method);
+    console.log("method: " + request.method);
 
-    if(URL.method == "GET"){
+    if(request.method == "GET"){
         var lastIndexOfDot = -1;
         try{
             lastIndexOfDot = URL.pathname.lastIndexOf('.');
@@ -71,8 +71,27 @@ http.createServer(function(request, response){
                 break;
         }
     }
-    else if(URL.method == "POST"){
-
+    else if(request.method == "POST"){
+        request.on('data',function(chunk){
+            var a = request.url + "?" + chunk;
+            var b = url.parse(a,true).query;
+            switch(URL.pathname){
+                case "/CreateTable" :
+                    // fs.readFile(path.html + "/index.html", function(err, data){
+                    //     if(err){
+                    //         response.writeHead(404,"Not found");
+                    //         response.end();
+                    //     }
+                    //     else{
+                    //         response.writeHead(200, {'content-type':mimeType.html});
+                    //         response.end(data);
+                    //     }
+                    // });
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
 }).listen(8080);
