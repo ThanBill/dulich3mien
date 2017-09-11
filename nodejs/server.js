@@ -6,56 +6,57 @@ var url = require('url');
 /*mimeType
 **************************************/
 var mimeType = {
-    html : "text/html",
-    ico : "image/x-icon",
-    jpg : "image/jpeg",
-    png : "image/png",
-    gif : "image/gif",
-    css : "text/css",
-    js : "text/javascript",
-    json : "application/json",
+    html: "text/html",
+    ico: "image/x-icon",
+    jpg: "image/jpeg",
+    png: "image/png",
+    gif: "image/gif",
+    css: "text/css",
+    js: "text/javascript",
+    json: "application/json",
     wav: "audio/wav",
     svg: "image/svg+xml",
-    woff2:"application/font-woff2"
+    woff2: "application/font-woff2"
 };
 /*path
 **************************************/
-var path ={
+var path = {
     html: "../htmls",
     public: "../public"
 };
 //end common
 
 
-http.createServer(function(request, response){
+http.createServer(function (request, response) {
 
     //analysis request
     const URL = url.parse(request.url);
-
+    console.log("url : " + URL);
+    console.log("pathname :"+ path.public + URL.pathname);
     console.log("method: " + request.method);
-
-    if(request.method == "GET"){
+console.log("path.html :" +path.html);
+    if (request.method == "GET") {
         var lastIndexOfDot = -1;
-        try{
+        try {
             lastIndexOfDot = URL.pathname.lastIndexOf('.');
         }
-        catch(exception){
+        catch (exception) {
             lastIndexOfDot = -1;
         }
         //compare file type for read file and return context-type in response writeHead
-        if(lastIndexOfDot > 0){
-            try{
+        if (lastIndexOfDot > 0) {
+            try {
                 var typeFile = URL.pathname.substr(lastIndexOfDot);
-                if(typeFile != null){
-                    for(var x in mimeType){
-                        if("."+x == typeFile){
-                            fs.readFile(path.public + URL.pathname, function(err, data){
-                                if(err){
-                                    response.writeHead(404,"Not found");
+                if (typeFile != null) {
+                    for (var x in mimeType) {
+                        if ("." + x == typeFile) {
+                            fs.readFile(path.public + URL.pathname, function (err, data) {
+                                if (err) {
+                                    response.writeHead(404, "Not found");
                                     response.end();
                                 }
-                                else{
-                                    response.writeHead(200, {'content-type':mimeType[x]});
+                                else {
+                                    response.writeHead(200, { 'content-type': mimeType[x] });
                                     response.end(data);
                                 }
                             });
@@ -64,43 +65,67 @@ http.createServer(function(request, response){
                     }
                 }
             }
-            catch(exception){
+            catch (exception) {
                 response.end();
             }
         }
-        switch(URL.pathname){
-            case "/" :
-                fs.readFile(path.html + "/index.html", function(err, data){
-                    if(err){
-                        response.writeHead(404,"Not found");
+        switch (URL.pathname) {
+            case "/":
+                fs.readFile(path.html + "/index.html", function (err, data) {
+                    if (err) {
+                        response.writeHead(404, "Not found");
                         response.end();
                     }
-                    else{
-                        response.writeHead(200, {'content-type':mimeType.html});
+                    else {
+                        response.writeHead(200, { 'content-type': mimeType.html });
                         response.end(data);
                     }
                 });
                 break;
             case "/AddFestival":
-                fs.readFile(path.html + "/AddFestival.html", function(err, data){
-                    if(err){
-                        response.writeHead(404,"Not found");
+                fs.readFile(path.html + "/AddFestival.html", function (err, data) {
+                    if (err) {
+                        response.writeHead(404, "Not found");
                         response.end();
                     }
-                    else{
-                        response.writeHead(200, {'content-type':mimeType.html});
+                    else {
+                        response.writeHead(200, { 'content-type': mimeType.html });
                         response.end(data);
                     }
                 });
                 break;
             case "/DeleteFestival":
-                fs.readFile(path.html + "/DeleteFestival.html", function(err, data){
-                    if(err){
-                        response.writeHead(404,"Not found");
+                fs.readFile(path.html + "/DeleteFestival.html", function (err, data) {
+                    if (err) {
+                        response.writeHead(404, "Not found");
                         response.end();
                     }
-                    else{
-                        response.writeHead(200, {'content-type':mimeType.html});
+                    else {
+                        response.writeHead(200, { 'content-type': mimeType.html });
+                        response.end(data);
+                    }
+                });
+                break;
+            case "/AddArea":
+                fs.readFile(path.html + "/AddArea.html", function (err, data) {
+                    if (err) {
+                        response.writeHead(404, "Not found");
+                        response.end();
+                    }
+                    else {
+                        response.writeHead(200, { 'content-type': mimeType.html });
+                        response.end(data);
+                    }
+                });
+                break;
+            case "/DeleteArea":
+                fs.readFile(path.html + "/DeleteArea.html", function (err, data) {
+                    if (err) {
+                        response.writeHead(404, "Not found");
+                        response.end();
+                    }
+                    else {
+                        response.writeHead(200, { 'content-type': mimeType.html });
                         response.end(data);
                     }
                 });
@@ -109,12 +134,12 @@ http.createServer(function(request, response){
                 break;
         }
     }
-    else if(request.method == "POST"){
-        request.on('data',function(chunk){
+    else if (request.method == "POST") {
+        request.on('data', function (chunk) {
             var a = request.url + "?" + chunk;
-            var b = url.parse(a,true).query;
-            switch(URL.pathname){
-                case "/CreateTable" :
+            var b = url.parse(a, true).query;
+            switch (URL.pathname) {
+                case "/CreateTable":
                     // fs.readFile(path.html + "/index.html", function(err, data){
                     //     if(err){
                     //         response.writeHead(404,"Not found");
