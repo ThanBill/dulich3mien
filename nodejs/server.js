@@ -81,8 +81,20 @@ http.createServer(function(request, response){
                     }
                 });
                 break;
-            case "/dulich3mien":
-                fs.readFile(path.html + "/index.html", function(err, data){
+            case "/AddFestival":
+                fs.readFile(path.html + "/AddFestival.html", function(err, data){
+                    if(err){
+                        response.writeHead(404,"Not found");
+                        response.end();
+                    }
+                    else{
+                        response.writeHead(200, {'content-type':mimeType.html});
+                        response.end(data);
+                    }
+                });
+                break;
+            case "/DeleteFestival":
+                fs.readFile(path.html + "/DeleteFestival.html", function(err, data){
                     if(err){
                         response.writeHead(404,"Not found");
                         response.end();
