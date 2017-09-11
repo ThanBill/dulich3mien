@@ -42,6 +42,32 @@ http.createServer(function(request, response){
         catch(exception){
             lastIndexOfDot = -1;
         }
+        //compare file type for read file and return context-type in response writeHead
+        if(lastIndexOfDot > 0){
+            try{
+                var typeFile = URL.pathname.substr(lastIndexOfDot);
+                if(typeFile != null){
+                    for(var x in mimeType){
+                        if("."+x == typeFile){
+                            fs.readFile(path.public + URL.pathname, function(err, data){
+                                if(err){
+                                    response.writeHead(404,"Not found");
+                                    response.end();
+                                }
+                                else{
+                                    response.writeHead(200, {'content-type':mimeType[x]});
+                                    response.end(data);
+                                }
+                            });
+                            break;
+                        }
+                    }
+                }
+            }
+            catch(exception){
+                response.end();
+            }
+        }
         switch(URL.pathname){
             case "/" :
                 fs.readFile(path.html + "/index.html", function(err, data){
