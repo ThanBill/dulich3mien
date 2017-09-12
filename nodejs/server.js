@@ -68,7 +68,7 @@ http.createServer(function(request, response){
                 response.end();
             }
         }
-        switch(URL.pathname){
+        switch(URL.pathname.toLowerCase()){
             case "/" :
                 fs.readFile(path.html + "/index.html", function(err, data){
                     if(err){
@@ -81,7 +81,7 @@ http.createServer(function(request, response){
                     }
                 });
                 break;
-            case "/AddFestival":
+            case "/addfestival":
                 fs.readFile(path.html + "/AddFestival.html", function(err, data){
                     if(err){
                         response.writeHead(404,"Not found");
@@ -93,8 +93,32 @@ http.createServer(function(request, response){
                     }
                 });
                 break;
-            case "/DeleteFestival":
+            case "/deletefestival":
                 fs.readFile(path.html + "/DeleteFestival.html", function(err, data){
+                    if(err){
+                        response.writeHead(404,"Not found");
+                        response.end();
+                    }
+                    else{
+                        response.writeHead(200, {'content-type':mimeType.html});
+                        response.end(data);
+                    }
+                });
+                break;
+            case "/addarea":
+                fs.readFile(path.html + "/AddArea.html", function(err, data){
+                    if(err){
+                        response.writeHead(404,"Not found");
+                        response.end();
+                    }
+                    else{
+                        response.writeHead(200, {'content-type':mimeType.html});
+                        response.end(data);
+                    }
+                });
+                break;
+            case "/deletearea":
+                fs.readFile(path.html + "/DeleteArea.html", function(err, data){
                     if(err){
                         response.writeHead(404,"Not found");
                         response.end();
